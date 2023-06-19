@@ -1,3 +1,7 @@
+if (!process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const path = require('path');
 const ejsMate = require('ejs-mate');
@@ -11,6 +15,7 @@ const localStrategy = require('passport-local');
 
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/test2';
+
 
 
 main().catch(err => console.log(err));
@@ -89,7 +94,6 @@ app.post('/register', async (req, res) => {
         req.logIn(registeredUser, (e) => {
             if (e) return next(e);
             // req.flash('success', 'Successfully registered!');
-            console.log(req.user);
             res.redirect('/');
         });
     }
