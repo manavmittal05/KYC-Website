@@ -1,0 +1,13 @@
+.kyc-pending {
+    color: #d73333;
+    font-weight: bold;
+}
+
+.kyc-pending:hover {
+    text-decoration: solid;
+}
+
+.kyc-done {
+    color: #2d8a2d;
+    font-weight: bold;
+}

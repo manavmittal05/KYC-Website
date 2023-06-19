@@ -77,7 +77,7 @@ app.get('/register', (req, res) => {
 app.post('/register', async (req, res) => {
     try {
         const { username, fullname, dob, gender, address, password } = req.body;
-        const user = new User({username, fullname, dob, gender, address});
+        const user = new User({ username, fullname, dob, gender, address });
         const registeredUser = await User.register(user, password);
         req.logIn(registeredUser, (e) => {
             if (e) return next(e);
@@ -99,14 +99,14 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
-app.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
-    try{
-        if(req.isAuthenticated(req, res)){
+app.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true }), (req, res) => {
+    try {
+        if (req.isAuthenticated(req, res)) {
             console.log('Authenticated');
             res.redirect('/');
         }
     }
-    catch(e){
+    catch (e) {
         console.log(e);
         res.redirect('/login');
     }
