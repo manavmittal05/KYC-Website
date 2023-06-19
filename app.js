@@ -64,6 +64,13 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// IMP NOTE FROM SIDHANT YADAV FOR REQ.USER AND PASSPORT
+// 'req.user' is only available once the user has been deserialized from the session. 'passport.serializeUser()' is used 
+// to push the authenticated user to the end of the session. 'passport.deserializeUser()' is used to retrieve the pushed
+// user from the last entry of the session and attach it to the request object as req.user. Therefore, req.user is only 
+// available after the user has been authenticated and deserialized from the session and hence, it should only be added 
+// in the 'res.locals' object AFTER passport has deserialized the user. 
+
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();
@@ -95,7 +102,6 @@ app.post('/register', async (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    // res.send('Register');
     res.render('login');
 });
 
@@ -114,7 +120,6 @@ app.post('/login', passport.authenticate('local', { failureFlash: true, failureR
 });
 
 app.get('/', (req, res) => {
-    // res.send('Home Page!');
     res.render('home');
 });
 
