@@ -13,6 +13,9 @@ const passport = require('passport');
 const expressSessions = require('express-session');
 const localStrategy = require('passport-local');
 
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/test2';
 
@@ -80,6 +83,21 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();
 })
+
+app.get('/kyc', (req, res) => {
+    res.render('kyc');
+});
+
+
+app.post('/kyc', upload.fields([{ name: 'idFront', maxCount: 1 }, { name: 'idBack', maxCount: 1 }]), (req, res) => {
+    console.log(req.files);
+    res.send(req.body);
+});
+
+// app.post('/kyc', (req, res) => {
+//     // console.log(req.file);
+//     res.send(req.body);
+// });
 
 app.get('/register', (req, res) => {
     // res.send('Register');
