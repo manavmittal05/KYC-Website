@@ -4,7 +4,8 @@
 }
 
 .kyc-pending:hover {
-    text-decoration: solid;
+    color: #ff2828;
+    /* text-decoration: underline solid 2px; */
 }
 
 .kyc-done {
