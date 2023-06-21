@@ -16,6 +16,8 @@ const localStrategy = require('passport-local');
 const multer = require('multer')
 const upload = multer({ dest: 'uploads/' })
 
+const { isLoggedIn } = require('./middleware');
+
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/test2';
 
@@ -81,10 +83,12 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
     next();
 })
 
-app.get('/kyc', (req, res) => {
+app.get('/kyc', isLoggedIn, (req, res) => {
     res.render('kyc');
 });
 
@@ -111,17 +115,27 @@ app.post('/register', async (req, res) => {
         const registeredUser = await User.register(user, password);
         req.logIn(registeredUser, (e) => {
             if (e) return next(e);
-            // req.flash('success', 'Successfully registered!');
+            req.flash('success', 'Successfully registered!');
             res.redirect('/');
         });
     }
     catch (e) {
-        // req.flash('error', e.message);
+        req.flash('error', e.message);
         console.log(e);
         res.redirect('/register');
     }
 
 });
+
+app.get('/logout', (req, res) => {
+    req.logout(req.user, e => {
+        if(e) return next(e);
+
+        req.flash('success', 'Successfully logged out!');
+        res.redirect('/login');
+    })
+});
+
 
 app.get('/login', (req, res) => {
     res.render('login');
@@ -131,14 +145,15 @@ app.post('/login', passport.authenticate('local', { failureFlash: true, failureR
     try {
         if (req.isAuthenticated(req, res)) {
             console.log('Authenticated');
+            req.flash('success', 'Successfully logged in!');
             res.redirect('/');
         }
     }
     catch (e) {
         console.log(e);
+        req.flash('error', e.message);
         res.redirect('/login');
     }
-
 });
 
 app.get('/', (req, res) => {
@@ -148,7 +163,6 @@ app.get('/', (req, res) => {
 app.all('*', (req, res, next) => {
     next(new expressError('Page Not Found!', 404));
 })
-
 
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
