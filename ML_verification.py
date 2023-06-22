@@ -6,7 +6,7 @@ import numpy as np
 
 
 def get_ocr(img):
-    reader = easyocr.Reader(['en'])
+    reader = easyocr.Reader(['en','hi'])
     result = reader.readtext(img)
     return result
 
