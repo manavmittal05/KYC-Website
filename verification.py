@@ -1,4 +1,3 @@
-# Import necessary libraries
 import base64
 import os
 from typing import List
@@ -7,7 +6,6 @@ import uvicorn
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fuzzywuzzy import fuzz, process
 from pydantic import BaseModel
-
 from ML_verification import *
 
 reader = easyocr.Reader(['en','hi'])
