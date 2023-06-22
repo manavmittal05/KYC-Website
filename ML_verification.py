@@ -4,7 +4,6 @@ import face_recognition
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 def get_ocr(img):
     reader = easyocr.Reader(['en','hi'])
     result = reader.readtext(img)
