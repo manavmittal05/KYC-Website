@@ -14,11 +14,14 @@ def get_faces(img):
     face_locations = face_recognition.face_locations(img)
     return face_locations
 
-def get_face_encodings(img,num_jitters=5, model='large'):
+def get_face_encodings(img,num_jitters=2, model='large'):
     face_encodings = face_recognition.face_encodings(img, num_jitters=num_jitters, model=model)
-    return face_encodings[0]
+    try:
+        return face_encodings[0]
+    except:
+        return []
 
-def same_person(img1,img2,threshold=0.45):
+def same_person(img1,img2,threshold=0.5):
     face_encodings1 = get_face_encodings(img1)
     face_encodings2 = get_face_encodings(img2)
     if len(face_encodings1) == 0 or len(face_encodings2) == 0:
