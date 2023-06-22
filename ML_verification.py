@@ -4,7 +4,6 @@ import face_recognition
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 def get_ocr(img):
     reader = easyocr.Reader(['en','hi'])
     result = reader.readtext(img)
@@ -29,6 +28,3 @@ def same_person(img1,img2,threshold=0.5):
     else:
         result = face_recognition.compare_faces([face_encodings1], face_encodings2, tolerance=threshold)
         return result[0]
-
-
-
