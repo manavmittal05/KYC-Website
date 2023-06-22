@@ -12,6 +12,8 @@ const User = require('./models/user');
 const passport = require('passport');
 const expressSessions = require('express-session');
 const localStrategy = require('passport-local');
+const axios = require('axios');
+const fs = require('fs');
 
 const multer = require('multer')
 const upload = multer({ dest: 'uploads/' })
@@ -46,7 +48,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 
 const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
@@ -66,6 +68,9 @@ const sessionConfig = {
 
 app.use(expressSessions(sessionConfig));
 app.use(flash());
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -94,8 +99,60 @@ app.get('/kyc', isLoggedIn, (req, res) => {
 
 
 app.post('/kyc', upload.fields([{ name: 'idFront', maxCount: 1 }, { name: 'idBack', maxCount: 1 }]), (req, res) => {
-    console.log(req.files);
-    res.send(req.body);
+    const dataBody = req.body;
+    const user = req.user;
+
+    const day = req.user.dob.getDate().toString().padStart(2, '0');
+    const month = (req.user.dob.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+    const year = req.user.dob.getFullYear();
+
+    const userDOB = `${day}/${month}/${year}`;
+
+    // console.log(formattedDate);
+
+
+    // Read the image file as a buffer
+    const imagePath = `./uploads/${req.files.idFront[0].filename}`;
+    const imageBuffer = fs.readFileSync(imagePath);
+
+    // Convert the image buffer to base64
+    const base64Image = Buffer.from(imageBuffer).toString('base64');
+
+    let selfieImg = dataBody.selfie;
+    selfieImg = selfieImg.split(',')[1];
+
+    const axiosData = {
+        dob: userDOB,
+        name: user.fullname,
+        gender: user.gender,
+        aadhaar_number: dataBody.idNum,
+        aadhaar_card: base64Image,
+        selfie: selfieImg
+    }
+
+    console.log(axiosData);
+
+    axios({
+        method: 'post',
+        url: 'http://141.148.199.47/verify_details',
+        data: axiosData
+    })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+
+    // axios.post('http://141.148.199.47/verify_details', {
+
+    // })
+
+
+
+    // console.log(req.files);
+    res.send(req.body, req.user);
 });
 
 // app.post('/kyc', (req, res) => {
@@ -129,7 +186,7 @@ app.post('/register', async (req, res) => {
 
 app.get('/logout', (req, res) => {
     req.logout(req.user, e => {
-        if(e) return next(e);
+        if (e) return next(e);
 
         req.flash('success', 'Successfully logged out!');
         res.redirect('/login');
