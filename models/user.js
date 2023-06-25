@@ -3,11 +3,7 @@ const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new Schema({
-    // contactNo: {
-    //     type: Number,
-    //     required: true,
-    //     unique: [true, 'Contact Number already registered.']
-    // },
+
     fullname: {
         type: String,
         required: true
@@ -24,20 +20,19 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    // aadharNo: {
-    //     type: String,
-    //     required: false,
-    //     unique: [true, 'Adhaar Number already registered.'],
-    //     default: "",
-    //     partialIndexExpression: { aadharNo: { $gt: ""} }
-    // },
-    // panNo: {
-    //     type: String,
-    //     required: false,
-    //     default: "",
-    //     unique: [true, 'PAN Number already registered.'],
-    //     partialIndexExpression: { aadharNo: { $gt: ""} }
-    // },
+    idType: {
+        type: String,
+        required: false,
+        default: "",
+        enum: ["Aadhaar", "PAN", ""]
+    },
+
+    idNum: {
+        type: String,
+        required: false,
+        default: "",
+    },
+
     kycStatus: {
         type: Boolean,
         required: false,
@@ -47,7 +42,7 @@ const userSchema = new Schema({
 
 userSchema.post('save', function (error, doc, next) {
     if (error.name === 'MongoError' && error.code === 11000) {
-        next(new Error('Email ID already registered.'));
+        next(new Error('Contact Number already registered!'));
     } else {
         next(error);
     }

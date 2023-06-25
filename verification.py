@@ -31,41 +31,43 @@ def get_img_b64(base64_image):
 @app.post("/verify_details")
 async def verify_details(request: Request):
     form = await request.json()
-    authenticated = True
+    authenticated = 0
     description = ''
     name = form["name"]
     name = name.upper().replace(" ","",-1)
     dob = form["dob"]
-    gender = form["gender"]
-    gender = gender.upper()
-    aadhaar_number = form["aadhaar_number"]
-    aadhaar_number = aadhaar_number.replace(" ","",-1)
-    aadhaar_image = get_img_b64(form["aadhaar_card"])
+    idType = form["idType"]
+    if idType.lower() == 'aadhaar':
+        gender = form["gender"]
+        gender = gender.upper()
+    idNum = form["idNum"]
+    idNum = idNum.replace(" ","",-1)
+    idImage = get_img_b64(form["idFront"])
     selfie = get_img_b64(form["selfie"])
-    text = reader.readtext(aadhaar_image)
+    text = reader.readtext(idImage)
     concatenated_text = ''
     for detection in text:
         text = detection[1]
         concatenated_text += text + ' '
     concatenated_text = concatenated_text.replace(' ', '',-1).upper()
-    if fuzz.partial_ratio(name,concatenated_text) < 85:
-        authenticated = False
-        description += 'Name not matched \n'
-    if fuzz.partial_ratio(dob,concatenated_text) < 90:
-        authenticated = False
-        description += 'DOB not matched \n'
-    if fuzz.partial_ratio(aadhaar_number,concatenated_text) < 90:
-        authenticated = False
-        description += 'Aadhaar number not matched \n'
-    if gender not in concatenated_text:
-        authenticated = False
-        description += 'Gender not matched \n'
-    face_match = same_person(aadhaar_image,selfie)
+    face_match = same_person(idImage,selfie)
     if not face_match:
-        authenticated = False
+        authenticated = 2
         description += 'Face not matched \n'
-    if authenticated:
-        description = 'Aadhaar verified successfully'
+    if name not in concatenated_text:
+        authenticated = 1
+        description += 'Name not matched \n'
+    if dob not in concatenated_text:
+        authenticated = 1
+        description += 'DOB not matched \n'
+    if idNum not in concatenated_text:
+        authenticated = 1
+        description += f'{idType} number not matched \n'
+    if idType.lower() == "adhaar" and gender not in concatenated_text:
+        authenticated = 1
+        description += 'Gender not matched \n'
+    if authenticated == 0:
+        description = f'{idType} verified successfully'
     result = Result(result=authenticated,description=description)
     return result
 

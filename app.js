@@ -21,7 +21,8 @@ const upload = multer({ dest: 'uploads/' })
 const { isLoggedIn } = require('./middleware');
 
 
-const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/test2';
+// const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/test2';
+const dbUrl = 'mongodb://127.0.0.1:27017/test3';
 
 
 
@@ -102,14 +103,11 @@ app.post('/kyc', upload.fields([{ name: 'idFront', maxCount: 1 }, { name: 'idBac
     const dataBody = req.body;
     const user = req.user;
 
+    // Converion of complete date and time stored in the db to proper dd/mm/yyyy format
     const day = req.user.dob.getDate().toString().padStart(2, '0');
     const month = (req.user.dob.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
     const year = req.user.dob.getFullYear();
-
     const userDOB = `${day}/${month}/${year}`;
-
-    // console.log(formattedDate);
-
 
     // Read the image file as a buffer
     const imagePath = `./uploads/${req.files.idFront[0].filename}`;
@@ -121,44 +119,69 @@ app.post('/kyc', upload.fields([{ name: 'idFront', maxCount: 1 }, { name: 'idBac
     let selfieImg = dataBody.selfie;
     selfieImg = selfieImg.split(',')[1];
 
+    // add loading screen here and then redirect to home page
+    
+
     const axiosData = {
         dob: userDOB,
         name: user.fullname,
         gender: user.gender,
-        aadhaar_number: dataBody.idNum,
-        aadhaar_card: base64Image,
+        idType: dataBody.idType,
+        idNum: dataBody.idNum,
+        idFront: base64Image,
         selfie: selfieImg
     }
 
-    console.log(axiosData);
-
     axios({
         method: 'post',
-        url: 'http://141.148.199.47/verify_details',
+        url: 'http://127.0.0.1:8000/verify_details',
         data: axiosData
     })
-        .then(function (response) {
-            console.log(response);
+        .then(async function (response) {
+            console.log(response.data);
+            if(response.data.result === 0){
+                await User.findByIdAndUpdate(req.user._id, 
+                    {
+                       $set : {
+                        kycStatus: true,
+                            idType: dataBody.idType,
+                            idNum: dataBody.idNum
+                        }
+                    });
+                console.log('success', 'KYC Verification Successful');
+                req.flash('success', 'KYC Verification Successful');
+                res.redirect('/');
+            }
+            else{
+                if(response.data.result === 1){
+                    req.flash('error', 'KYC Verification Failed! Details Mismatch');
+                    console.log('error', 'KYC Verification Failed! Details Mismatch');
+                    res.redirect('/');
+                }
+                else if(response.data.result === 2){
+                    req.flash('error', 'KYC Verification Failed! Please try again with clearer photo.');
+                    console.log('error', 'KYC Verification Failed! Please try again with clearer photo.');
+                    res.redirect('/');
+                }
+            }
         })
         .catch(function (error) {
+            req.flash('error', 'Something went wrong! Please try again later.');
             console.log(error);
+            res.redirect('/');
         });
-
-
-    // axios.post('http://141.148.199.47/verify_details', {
-
-    // })
-
-
-
-    // console.log(req.files);
-    res.send(req.body, req.user);
+        
+        fs.unlink(imagePath, (err) => {
+            if (err) {
+                console.error(err)
+                }
+            });
+        fs.unlink(`./uploads/${req.files.idBack[0].filename}`, (err) => {
+            if (err) {
+                console.error(err)
+                }
+            });
 });
-
-// app.post('/kyc', (req, res) => {
-//     // console.log(req.file);
-//     res.send(req.body);
-// });
 
 app.get('/register', (req, res) => {
     // res.send('Register');
