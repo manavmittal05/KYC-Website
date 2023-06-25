@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def get_ocr(img):
-    reader = easyocr.Reader(['en','hi'])
+    reader = easyocr.Reader(['en'])
     result = reader.readtext(img)
     return result
 
@@ -13,7 +13,7 @@ def get_faces(img):
     face_locations = face_recognition.face_locations(img)
     return face_locations
 
-def get_face_encodings(img,num_jitters=2, model='large'):
+def get_face_encodings(img,num_jitters=10, model='large'):
     face_encodings = face_recognition.face_encodings(img, num_jitters=num_jitters, model=model)
     try:
         return face_encodings[0]
