@@ -10,7 +10,9 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <% if (currentUser) { %>
-                    <a class="nav-link kyc-pending" href="/kyc">KYC</a>
+                    <a class="nav-link kyc-pending <% if (currentUser.kycStatus) { %>
+                     <%= 'kyc-done disabled-link' %>
+                    <% } %>" href="/kyc">KYC</a>
                     <% } %>
                 </li>
             </ul>

@@ -1,98 +1,98 @@
 <% layout('layouts/boilerplate')%>
 <div class="container d-flex justify-content-center align-items-center"></div>
-    <% if (currentUser) { %>
-        <section style="background-color: #ffffff;">
-            <div class="row">
-                <div class="col-lg-8">
-                <div class="card mb-4">
-                    <div class="card-body">
+<% if (currentUser) { %>
+<section style="background-color: #ffffff;">
+    <div class="row">
+        <div class="col-lg-8 col-md-6 offset-md-3 offset-lg-2">
+            <div class="card mb-4">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-sm-3">
-                        <p class="mb-0">Full Name</p>
+                            <p class="mb-0">Full Name</p>
                         </div>
                         <div class="col-sm-9">
-                        <p class="text-muted mb-0"><%=currentUser.fullname%></p>
+                            <p class="text-muted mb-0"><%=currentUser.fullname%></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                        <p class="mb-0">Gender</p>
+                            <p class="mb-0">Gender</p>
                         </div>
                         <div class="col-sm-9">
                             <% if (currentUser.gender.toString() == "male") { %>
-                                <p class="text-muted mb-0">Male</p>
+                            <p class="text-muted mb-0">Male</p>
                             <% } else if (currentUser.gender.toString() == 'female'){ %>
-                                <p class="text-muted mb-0">Female</p>
+                            <p class="text-muted mb-0">Female</p>
                             <% } else { %>
-                                <p class="text-muted mb-0">Transgender</p>
+                            <p class="text-muted mb-0">Transgender</p>
                             <% } %>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                        <p class="mb-0">Contact Number</p>
+                            <p class="mb-0">Contact Number</p>
                         </div>
                         <div class="col-sm-9">
-                        <p class="text-muted mb-0"><%=currentUser.username%></p>
+                            <p class="text-muted mb-0"><%=currentUser.username%></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                        <p class="mb-0">Date of Birth</p>
+                            <p class="mb-0">Date of Birth</p>
                         </div>
                         <div class="col-sm-9">
-                        <p class="text-muted mb-0"><%=currentUser.dob.toString().substring(0,15)%></p>
+                            <p class="text-muted mb-0"><%=currentUser.dob.toString().substring(0,15)%></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                        <p class="mb-0">Address</p>
+                            <p class="mb-0">Address</p>
                         </div>
                         <div class="col-sm-9">
-                        <p class="text-muted mb-0"><%=currentUser.address%></p>
+                            <p class="text-muted mb-0"><%=currentUser.address%></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                        <p class="mb-0">KYC Status</p>
+                            <p class="mb-0">KYC Status</p>
                         </div>
                         <div class="col-sm-9">
                             <% if (currentUser.kycStatus) { %>
-                                <p class="text-muted mb-0">Verified</p>
+                            <p class="text-muted mb-0">Verified</p>
                             <% } else { %>
-                                <p class="text-muted mb-0">Not Verified</p>
+                            <p class="text-muted mb-0">Not Verified</p>
                             <% } %>
                         </div>
                     </div>
                     <% if (currentUser.kycStatus) { %>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                            <p class="mb-0">KYC Document</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0"><%= currentUser.idType %></p>
-                            </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">KYC ID</p>
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                            <p class="mb-0">Document Number</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0"><%= currentUser.idNum %></p>
-                            </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0"><%= currentUser.idType %></p>
                         </div>
-                    <% } %>
                     </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">ID Number</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0"><%= currentUser.idNum %></p>
+                        </div>
+                    </div>
+                    <% } %>
                 </div>
             </div>
-            </div>
-        </section>
+        </div>
     </div>
+</section>
+</div>
 <% } %>

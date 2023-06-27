@@ -48,7 +48,6 @@ userSchema.post('save', function (error, doc, next) {
     }
 });
 
-
 userSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User', userSchema);

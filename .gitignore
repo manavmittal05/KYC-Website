@@ -1,3 +1,6 @@
 node_modules
 .vscode
 uploads
+creds.txt
+package-lock.json
+package.json

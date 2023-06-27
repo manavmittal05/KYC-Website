@@ -21,18 +21,13 @@ const upload = multer({ dest: 'uploads/' })
 const { isLoggedIn } = require('./middleware');
 
 
-// const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/test2';
-const dbUrl = 'mongodb://127.0.0.1:27017/test3';
-
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/test2';
 
 
 main().catch(err => console.log(err));
 
 async function main() {
-    await mongoose.connect(dbUrl);
-    // await mongoose.connect(dbUrl);
-
-    // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+    await mongoose.connect(dbUrl, { dbName: 'KYC-DB' });
 }
 
 const db = mongoose.connection;
@@ -49,16 +44,20 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use(express.urlencoded({ extended: true }));
-
 const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
+// const store = MongoStore.create({
+//     mongoUrl: dbUrl,
+//     touchAfter: 24 * 60 * 60,
+//     crypto: { secret }
+// })
 
 const sessionConfig = {
     // store,
     name: 'KYCSession',
     secret,
     resave: false,
-    // security: true,  //PROVES HTTPS SUPPORT (LOCALHOST ISN'T HTTPS BUT IS HTTP, HENCE IT WONT WORK ON LOCALHOST)
+    security: true,  //PROVES HTTPS SUPPORT (LOCALHOST ISN'T HTTPS BUT IS HTTP, HENCE IT WONT WORK ON LOCALHOST)
     saveUninitialized: true,
     cookie: {
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
@@ -120,7 +119,7 @@ app.post('/kyc', upload.fields([{ name: 'idFront', maxCount: 1 }, { name: 'idBac
     selfieImg = selfieImg.split(',')[1];
 
     // add loading screen here and then redirect to home page
-    
+
 
     const axiosData = {
         dob: userDOB,
@@ -134,16 +133,16 @@ app.post('/kyc', upload.fields([{ name: 'idFront', maxCount: 1 }, { name: 'idBac
 
     axios({
         method: 'post',
-        url: 'http://127.0.0.1:8000/verify_details',
+        url: 'http://141.148.199.47/verify_details',
         data: axiosData
     })
         .then(async function (response) {
             console.log(response.data);
-            if(response.data.result === 0){
-                await User.findByIdAndUpdate(req.user._id, 
+            if (response.data.result === 0) {
+                await User.findByIdAndUpdate(req.user._id,
                     {
-                       $set : {
-                        kycStatus: true,
+                        $set: {
+                            kycStatus: true,
                             idType: dataBody.idType,
                             idNum: dataBody.idNum
                         }
@@ -152,13 +151,13 @@ app.post('/kyc', upload.fields([{ name: 'idFront', maxCount: 1 }, { name: 'idBac
                 req.flash('success', 'KYC Verification Successful');
                 res.redirect('/');
             }
-            else{
-                if(response.data.result === 1){
+            else {
+                if (response.data.result === 1) {
                     req.flash('error', 'KYC Verification Failed! Details Mismatch');
                     console.log('error', 'KYC Verification Failed! Details Mismatch');
                     res.redirect('/');
                 }
-                else if(response.data.result === 2){
+                else if (response.data.result === 2) {
                     req.flash('error', 'KYC Verification Failed! Please try again with clearer photo.');
                     console.log('error', 'KYC Verification Failed! Please try again with clearer photo.');
                     res.redirect('/');
@@ -170,17 +169,17 @@ app.post('/kyc', upload.fields([{ name: 'idFront', maxCount: 1 }, { name: 'idBac
             console.log(error);
             res.redirect('/');
         });
-        
-        fs.unlink(imagePath, (err) => {
-            if (err) {
-                console.error(err)
-                }
-            });
-        fs.unlink(`./uploads/${req.files.idBack[0].filename}`, (err) => {
-            if (err) {
-                console.error(err)
-                }
-            });
+
+    fs.unlink(imagePath, (err) => {
+        if (err) {
+            console.error(err)
+        }
+    });
+    fs.unlink(`./uploads/${req.files.idBack[0].filename}`, (err) => {
+        if (err) {
+            console.error(err)
+        }
+    });
 });
 
 app.get('/register', (req, res) => {

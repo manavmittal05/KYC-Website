@@ -12,3 +12,9 @@
     color: #2d8a2d;
     font-weight: bold;
 }
+
+.disabled-link {
+    pointer-events: none;
+    cursor: default;
+    color: #2d8a2d;
+}
