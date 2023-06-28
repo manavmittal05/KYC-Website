@@ -1,5 +1,7 @@
 # KYC-Website
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-1sgbui-Umc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 KYC-Website is a web application designed to authenticate customers by utilizing their valid government-issued ID. It leverages machine learning techniques to match the user's real-time face with the information provided on the ID card, including details such as date of birth and gender. This project holds immense industrial significance as it fulfills the KYC (Know Your Customer) verification requirements for banking and financial institutions.
 
 **Note:** Due to financial constraints, we were unable to acquire a domain name and SSL certification for our web app. As a result, the website runs on HTTP instead of HTTPS. This leads to a minor inconvenience since modern browsers restrict the use of the camera and microphone on HTTP-only websites, hindering the KYC process. To overcome this issue, it is necessary to add the website to the list of exceptions at "chrome://flags/#unsafely-treat-insecure-origin-as-secure". This will prompt the browser to treat our website as HTTPS, resolving the limitation.
