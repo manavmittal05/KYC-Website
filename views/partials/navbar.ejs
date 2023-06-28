@@ -2,12 +2,12 @@
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">KYC App</a>
+        <a class="navbar-brand" href="/">KYC Website</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <% if (currentUser) { %>
                     <a class="nav-link kyc-pending <% if (currentUser.kycStatus) { %>
@@ -18,14 +18,14 @@
             </ul>
             <ul class="navbar-nav ms-auto">
                 <% if (!currentUser) { %>
-                <li class="nav-item">
+                <li class="nav-item ms-auto">
                     <a class="nav-link" href="/register">Register</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item ms-auto">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
                 <% } else { %>
-                <li class="nav-item">
+                <li class="nav-item ms-auto">
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
                 <% } %>

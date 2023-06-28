@@ -1,93 +1,96 @@
 <% layout('layouts/boilerplate')%>
 
-<div class="container d-flex justify-content-center align-items-center mt-5">
+<div class="container d-flex justify-content-center align-items-center mb-5">
     <div class="row">
-        <div class="col-md-6 offset-md-3 col-xl-6 offset-xl-3">
-            <div class="card-body">
-                <h5 class="card-title fs-1">KYC Verification</h5>
-                <form action="/kyc" method="POST" enctype="multipart/form-data" class="validated-form" novalidate>
-                    <div class="mb-3">
+        <div class="col-md-6 offset-md-3 col-xl-8 offset-xl-2">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title fs-1">KYC Verification</h5>
+                    <form action="/kyc" method="POST" enctype="multipart/form-data" class="validated-form" novalidate>
                         <div class="mb-3">
-                            <input type="hidden" class="form-control" type="text" id="selfie" name="selfie">
-
                             <div class="mb-3">
-                                <label class="form-label" for="idType">Select ID Card</label>
-                                <select class="form-select form-select mb-3" id="idType" name="idType" aria-label="Default select example" required>
-                                    <option selected disabled>Choose ID</option>
-                                    <option value="Aadhaar">Aadhaar</option>
-                                    <option value="PAN">PAN</option>
+                                <input type="hidden" class="form-control" type="text" id="selfie" name="selfie">
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="idType">Select ID Card</label>
+                                    <select class="form-select form-select mb-3" id="idType" name="idType" aria-label="Default select example" required>
+                                        <option selected disabled>Choose ID</option>
+                                        <option value="Aadhaar">Aadhaar</option>
+                                        <option value="PAN">PAN</option>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="idNum">ID Number</label>
+                                    <input class="form-control" type="text" id="idNum" name="idNum" required>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
-                                </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="idFront" class="form-label">Upload ID front</label><span class="text-secondary fw-lighter"> (in .jpg/.png only)</span>
+                                    <input class="form-control" type="file" id="idFront" name="idFront">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="idBack" class="form-label">Upload ID back</label><span class="text-secondary fw-lighter"> (in .jpg/.png only)</span>
+                                    <input class="form-control" type="file" id="idBack" name="idBack">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <a class="btn btn-secondary mb-3" id="start-camera">Start Camera</a>
+                                    <a class="btn btn-primary mb-3" id="click-photo">Click Photo</a>
+                                    <p></p>
+                                    <video id="video" style="border: 1px solid;" width="320" height="240" autoplay></video>
+                                    <canvas id="canvas" style="border: 1px solid;" width="320" height="240"></canvas>
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label" for="idNum">ID Number</label>
-                                <input class="form-control" type="text" id="idNum" name="idNum" required>
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="idFront" class="form-label">Upload ID front</label>
-                                <input class="form-control" type="file" id="idFront" name="idFront">
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="idBack" class="form-label">Upload ID back</label>
-                                <input class="form-control" type="file" id="idBack" name="idBack">
-                                <div class="valid-feedback">
-                                    Looks good!
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <a class="btn btn-secondary mb-3" id="start-camera">Start Camera</a>
-                                <a class="btn btn-primary mb-3" id="click-photo">Click Photo</a>
-                                <video id="video" style="border: 1px solid;" width="320" height="240" autoplay></video>
-                                <canvas id="canvas" style="border: 1px solid;" width="320" height="240"></canvas>
-                            </div>
-                        </div>
-
-                        <div id="loading" class="hidden">
-                            <div class="boxes">
-                                <div class="box">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div class="box">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div class="box">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div class="box">
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
+                            <div id="loading" class="hidden">
+                                <div class="boxes">
+                                    <div class="box">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                    <div class="box">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                    <div class="box">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                    <div class="box">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <button id="submitButton" class="btn btn-success w-100">Verify</button>
-                    </div>
-                </form>
+                        <div class="mb-3">
+                            <button id="submitButton" class="btn btn-success w-100">Verify</button>
+                        </div>
+                    </form>
 
+                </div>
             </div>
         </div>
     </div>

@@ -1,14 +1,15 @@
 <% layout('layouts/boilerplate')%>
 
-<div class="container d-flex justify-content-center align-items-center mt-5">
+<div class="container d-flex justify-content-center align-items-center">
     <div class="row">
-        <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
+        <div class="col-md-6 offset-md-3 col-xl-8 offset-xl-2 mb-5">
             <div class="card shadow">
-                <img src="https://images.unsplash.com/photo-1571863533956-01c88e79957e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80" alt="" class="card-img-top" />
+                <img src="img/KYC-Logo.png" alt="" class="card-img-top" />
                 <div class="card-body">
-                    <h5 class="card-title">Register</h5>
+                    <h5 class="card-titl fs-4">Register</h5>
                     <form action="/register" method="POST" class="validated-form" novalidate>
                         <div class="mb-3">
+
                             <div class="mb-3">
                                 <label class="form-label" for="contactNo">Contact Number</label>
                                 <input class="form-control" type="text" pattern="[0-9]{10}" id="username" name="username" autofocus required>
@@ -18,19 +19,25 @@
                                 <div class="invalid-feedback">
                                     Please enter a valid Mobile Number!
                                 </div>
+                            </div>
 
+                            <div class="mb-3">
                                 <label class="form-label" for="fullname">Full Name</label>
                                 <input class="form-control" type="text" id="fullname" name="fullname" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
+                            </div>
 
+                            <div class="mb-3">
                                 <label class="form-label" for="dob">Date of Birth</label>
                                 <input class="form-control" type="date" id="dob" name="dob" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
+                            </div>
 
+                            <div class="mb-3">
                                 <label class="form-label" for="gender">Gender</label>
                                 <select class="form-select" id="gender" name="gender" aria-label="Default select example">
                                     <option selected disabled>Choose your gender</option>
@@ -41,29 +48,26 @@
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
+                            </div>
 
-                                <div>
-                                    <label class="form-label" for="address">Address</label>
-                                    <input class="form-control" type="text" id="address" name="address" required>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="address">Address</label>
+                                <input class="form-control" type="text" id="address" name="address" required>
+                                <div class="valid-feedback">
+                                    Looks good!
                                 </div>
+                            </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label" for="password">Password</label>
-                                    <input class="form-control" type="password" id="password" name="password" required>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="password">Password</label>
+                                <input class="form-control" type="password" id="password" name="password" required>
+                                <div class="valid-feedback">
+                                    Looks good!
                                 </div>
-
                             </div>
 
                         </div>
-                        <div class="mb-3">
 
-                        </div>
                         <button class="btn btn-success w-100">Register</button>
                     </form>
 
