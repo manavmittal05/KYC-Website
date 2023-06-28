@@ -1,6 +1,6 @@
 # KYC-Website
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/-1sgbui-Umc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![Watch the video](https://img.youtube.com/vi/-1sgbui-Umc/maxresdefault.jpg)](https://youtu.be/-1sgbui-Umc)
 
 KYC-Website is a web application designed to authenticate customers by utilizing their valid government-issued ID. It leverages machine learning techniques to match the user's real-time face with the information provided on the ID card, including details such as date of birth and gender. This project holds immense industrial significance as it fulfills the KYC (Know Your Customer) verification requirements for banking and financial institutions.
 
